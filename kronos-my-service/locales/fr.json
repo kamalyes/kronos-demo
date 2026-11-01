@@ -1,0 +1,27 @@
+{
+  "welcome": "Bienvenue",
+  "success": "Succès",
+  "hello": "Bonjour",
+  "goodbye": "Au revoir",
+  "error": {
+    "product_not_found": "Product introuvable",
+    "product_already_exists": "Product existe déjà : {{reason}}",
+    "product_invalid_status": "Statut de Product invalide : {{reason}}",
+    "warehouse_not_found": "Warehouse introuvable",
+    "warehouse_already_exists": "Warehouse existe déjà : {{reason}}",
+    "warehouse_invalid_status": "Statut de Warehouse invalide : {{reason}}",
+    "tenant_not_found": "Tenant introuvable",
+    "tenant_already_exists": "Tenant existe déjà : {{reason}}",
+    "tenant_invalid_status": "Le statut actuel de Tenant n'autorise pas cette opération : {{reason}}",
+    "tenant_region_assignment_not_found": "Affectation de région de Tenant introuvable",
+    "tenant_member_not_found": "Membre de Tenant introuvable",
+    "tenant_member_already_exists": "Le membre de Tenant existe déjà : {{reason}}",
+    "tenant_member_invalid_role": "Rôle de membre de Tenant invalide : {{reason}}"
+  },
+  "tenant": {
+    "sync": {
+      "already_synced": "Déjà synchronisé, aucune nouvelle exécution nécessaire",
+      "triggered": "Synchronisation en aval déclenchée"
+    }
+  }
+}

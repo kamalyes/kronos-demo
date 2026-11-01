@@ -1,0 +1,27 @@
+{
+  "welcome": "Welcome",
+  "success": "Success",
+  "hello": "Hello",
+  "goodbye": "Goodbye",
+  "error": {
+    "product_not_found": "Product পাওয়া যায়নি",
+    "product_already_exists": "Product ইতিমধ্যে বিদ্যমান: {{reason}}",
+    "product_invalid_status": "Product এর স্থিতি অবৈধ: {{reason}}",
+    "warehouse_not_found": "Warehouse পাওয়া যায়নি",
+    "warehouse_already_exists": "Warehouse ইতিমধ্যে বিদ্যমান: {{reason}}",
+    "warehouse_invalid_status": "Warehouse এর স্থিতি অবৈধ: {{reason}}",
+    "tenant_not_found": "Tenant পাওয়া যায়নি",
+    "tenant_already_exists": "Tenant ইতিমধ্যে বিদ্যমান: {{reason}}",
+    "tenant_invalid_status": "Tenant এর বর্তমান স্থিতি এই কাজের অনুমতি দেয় না: {{reason}}",
+    "tenant_region_assignment_not_found": "Tenant অঞ্চল নির্ধারণ পাওয়া যায়নি",
+    "tenant_member_not_found": "Tenant সদস্য পাওয়া যায়নি",
+    "tenant_member_already_exists": "Tenant সদস্য ইতিমধ্যে বিদ্যমান: {{reason}}",
+    "tenant_member_invalid_role": "Tenant সদস্যের ভূমিকা অবৈধ: {{reason}}"
+  },
+  "tenant": {
+    "sync": {
+      "already_synced": "ইতিমধ্যে সিঙ্ক হয়েছে, পুনরায় চালানোর প্রয়োজন নেই",
+      "triggered": "ডাউনস্ট্রিম সিঙ্ক শুরু হয়েছে"
+    }
+  }
+}

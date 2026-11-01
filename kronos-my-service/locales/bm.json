@@ -1,0 +1,27 @@
+{
+  "welcome": "Welcome",
+  "success": "Success",
+  "hello": "Hello",
+  "goodbye": "Goodbye",
+  "error": {
+    "product_not_found": "Product tidak ditemui",
+    "product_already_exists": "Product sudah wujud: {{reason}}",
+    "product_invalid_status": "Status Product tidak sah: {{reason}}",
+    "warehouse_not_found": "Warehouse tidak ditemui",
+    "warehouse_already_exists": "Warehouse sudah wujud: {{reason}}",
+    "warehouse_invalid_status": "Status Warehouse tidak sah: {{reason}}",
+    "tenant_not_found": "Tenant tidak ditemui",
+    "tenant_already_exists": "Tenant sudah wujud: {{reason}}",
+    "tenant_invalid_status": "Status semasa Tenant tidak membenarkan operasi ini: {{reason}}",
+    "tenant_region_assignment_not_found": "Peruntukan wilayah Tenant tidak ditemui",
+    "tenant_member_not_found": "Anggota Tenant tidak ditemui",
+    "tenant_member_already_exists": "Anggota Tenant sudah wujud: {{reason}}",
+    "tenant_member_invalid_role": "Peranan anggota Tenant tidak sah: {{reason}}"
+  },
+  "tenant": {
+    "sync": {
+      "already_synced": "Sudah disegerakkan, tidak perlu dicetuskan lagi",
+      "triggered": "Penyegerakan hiliran telah dicetuskan"
+    }
+  }
+}

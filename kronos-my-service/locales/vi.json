@@ -1,0 +1,27 @@
+{
+  "welcome": "Welcome",
+  "success": "Success",
+  "hello": "Hello",
+  "goodbye": "Goodbye",
+  "error": {
+    "product_not_found": "Không tìm thấy Product",
+    "product_already_exists": "Product đã tồn tại: {{reason}}",
+    "product_invalid_status": "Trạng thái Product không hợp lệ: {{reason}}",
+    "warehouse_not_found": "Không tìm thấy Warehouse",
+    "warehouse_already_exists": "Warehouse đã tồn tại: {{reason}}",
+    "warehouse_invalid_status": "Trạng thái Warehouse không hợp lệ: {{reason}}",
+    "tenant_not_found": "Không tìm thấy Tenant",
+    "tenant_already_exists": "Tenant đã tồn tại: {{reason}}",
+    "tenant_invalid_status": "Trạng thái hiện tại của Tenant không cho phép thao tác này: {{reason}}",
+    "tenant_region_assignment_not_found": "Không tìm thấy phân bổ khu vực của Tenant",
+    "tenant_member_not_found": "Không tìm thấy thành viên Tenant",
+    "tenant_member_already_exists": "Thành viên Tenant đã tồn tại: {{reason}}",
+    "tenant_member_invalid_role": "Vai trò thành viên Tenant không hợp lệ: {{reason}}"
+  },
+  "tenant": {
+    "sync": {
+      "already_synced": "Đã đồng bộ, không cần kích hoạt lại",
+      "triggered": "Đã kích hoạt đồng bộ xuống hệ thống phía sau"
+    }
+  }
+}

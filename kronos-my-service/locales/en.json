@@ -1,0 +1,27 @@
+{
+  "welcome": "Welcome",
+  "success": "Success",
+  "hello": "Hello",
+  "goodbye": "Goodbye",
+  "error": {
+    "product_not_found": "Product not found",
+    "product_already_exists": "Product already exists: {{reason}}",
+    "product_invalid_status": "Invalid Product status: {{reason}}",
+    "warehouse_not_found": "Warehouse not found",
+    "warehouse_already_exists": "Warehouse already exists: {{reason}}",
+    "warehouse_invalid_status": "Invalid Warehouse status: {{reason}}",
+    "tenant_not_found": "Tenant not found",
+    "tenant_already_exists": "Tenant already exists: {{reason}}",
+    "tenant_invalid_status": "Tenant status does not allow this operation: {{reason}}",
+    "tenant_region_assignment_not_found": "Tenant region assignment not found",
+    "tenant_member_not_found": "Tenant member not found",
+    "tenant_member_already_exists": "Tenant member already exists: {{reason}}",
+    "tenant_member_invalid_role": "Invalid Tenant member role: {{reason}}"
+  },
+  "tenant": {
+    "sync": {
+      "already_synced": "Already synced, no need to trigger again",
+      "triggered": "Downstream sync triggered"
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "welcome": "Welcome",
+  "success": "Success",
+  "hello": "Hello",
+  "goodbye": "Goodbye",
+  "error": {
+    "product_not_found": "រកមិនឃើញ Product",
+    "product_already_exists": "Product មានរួចហើយ៖ {{reason}}",
+    "product_invalid_status": "ស្ថានភាព Product មិនត្រឹមត្រូវ៖ {{reason}}",
+    "warehouse_not_found": "រកមិនឃើញ Warehouse",
+    "warehouse_already_exists": "Warehouse មានរួចហើយ៖ {{reason}}",
+    "warehouse_invalid_status": "ស្ថានភាព Warehouse មិនត្រឹមត្រូវ៖ {{reason}}",
+    "tenant_not_found": "រកមិនឃើញ Tenant",
+    "tenant_already_exists": "Tenant មានរួចហើយ៖ {{reason}}",
+    "tenant_invalid_status": "ស្ថានភាពបច្ចុប្បន្នរបស់ Tenant មិនអនុញ្ញាតប្រតិបត្តិការនេះ៖ {{reason}}",
+    "tenant_region_assignment_not_found": "រកមិនឃើញការបែងចែកតំបន់របស់ Tenant",
+    "tenant_member_not_found": "រកមិនឃើញសមាជិករបស់ Tenant",
+    "tenant_member_already_exists": "សមាជិករបស់ Tenant មានរួចហើយ៖ {{reason}}",
+    "tenant_member_invalid_role": "តួនាទីសមាជិករបស់ Tenant មិនត្រឹមត្រូវ៖ {{reason}}"
+  },
+  "tenant": {
+    "sync": {
+      "already_synced": "បានធ្វើសមកាលកម្មរួចហើយ មិនចាំបាច់ធ្វើឡើងវិញទេ",
+      "triggered": "បានចាប់ផ្តើមធ្វើសមកាលកម្មទៅប្រព័ន្ធខាងក្រោម"
+    }
+  }
+}

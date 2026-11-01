@@ -1,0 +1,27 @@
+{
+  "welcome": "Welcome",
+  "success": "Success",
+  "hello": "Hello",
+  "goodbye": "Goodbye",
+  "error": {
+    "product_not_found": "Product 不存在",
+    "product_already_exists": "Product 已存在：{{reason}}",
+    "product_invalid_status": "Product 狀態無效：{{reason}}",
+    "warehouse_not_found": "Warehouse 不存在",
+    "warehouse_already_exists": "Warehouse 已存在：{{reason}}",
+    "warehouse_invalid_status": "Warehouse 狀態無效：{{reason}}",
+    "tenant_not_found": "Tenant 不存在",
+    "tenant_already_exists": "Tenant 已存在：{{reason}}",
+    "tenant_invalid_status": "Tenant 目前狀態不允許此操作：{{reason}}",
+    "tenant_region_assignment_not_found": "Tenant 地區分配不存在",
+    "tenant_member_not_found": "Tenant 成員不存在",
+    "tenant_member_already_exists": "Tenant 成員已存在：{{reason}}",
+    "tenant_member_invalid_role": "Tenant 成員角色無效：{{reason}}"
+  },
+  "tenant": {
+    "sync": {
+      "already_synced": "已同步，無需重複觸發",
+      "triggered": "已觸發下游同步"
+    }
+  }
+}

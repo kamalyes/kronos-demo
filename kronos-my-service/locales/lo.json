@@ -1,0 +1,27 @@
+{
+  "welcome": "Welcome",
+  "success": "Success",
+  "hello": "Hello",
+  "goodbye": "Goodbye",
+  "error": {
+    "product_not_found": "ບໍ່ພົບ Product",
+    "product_already_exists": "Product ມີຢູ່ແລ້ວ: {{reason}}",
+    "product_invalid_status": "ສະຖານະຂອງ Product ບໍ່ຖືກຕ້ອງ: {{reason}}",
+    "warehouse_not_found": "ບໍ່ພົບ Warehouse",
+    "warehouse_already_exists": "Warehouse ມີຢູ່ແລ້ວ: {{reason}}",
+    "warehouse_invalid_status": "ສະຖານະຂອງ Warehouse ບໍ່ຖືກຕ້ອງ: {{reason}}",
+    "tenant_not_found": "ບໍ່ພົບ Tenant",
+    "tenant_already_exists": "Tenant ມີຢູ່ແລ້ວ: {{reason}}",
+    "tenant_invalid_status": "ສະຖານະປັດຈຸບັນຂອງ Tenant ບໍ່ອະນຸຍາດໃຫ້ດຳເນີນການນີ້: {{reason}}",
+    "tenant_region_assignment_not_found": "ບໍ່ພົບການກຳນົດເຂດຂອງ Tenant",
+    "tenant_member_not_found": "ບໍ່ພົບສະມາຊິກຂອງ Tenant",
+    "tenant_member_already_exists": "ສະມາຊິກຂອງ Tenant ມີຢູ່ແລ້ວ: {{reason}}",
+    "tenant_member_invalid_role": "ບົດບາດສະມາຊິກຂອງ Tenant ບໍ່ຖືກຕ້ອງ: {{reason}}"
+  },
+  "tenant": {
+    "sync": {
+      "already_synced": "ຊິງຄ໌ແລ້ວ, ບໍ່ຈຳເປັນຕ້ອງເລີ່ມໃໝ່",
+      "triggered": "ເລີ່ມການຊິງຄ໌ໄປຍັງລະບົບປາຍທາງແລ້ວ"
+    }
+  }
+}

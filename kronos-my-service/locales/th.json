@@ -1,0 +1,27 @@
+{
+  "welcome": "ยินดีต้อนรับ",
+  "success": "สำเร็จ",
+  "hello": "สวัสดี",
+  "goodbye": "ลาก่อน",
+  "error": {
+    "product_not_found": "ไม่พบ Product",
+    "product_already_exists": "Product มีอยู่แล้ว: {{reason}}",
+    "product_invalid_status": "สถานะของ Product ไม่ถูกต้อง: {{reason}}",
+    "warehouse_not_found": "ไม่พบ Warehouse",
+    "warehouse_already_exists": "Warehouse มีอยู่แล้ว: {{reason}}",
+    "warehouse_invalid_status": "สถานะของ Warehouse ไม่ถูกต้อง: {{reason}}",
+    "tenant_not_found": "ไม่พบ Tenant",
+    "tenant_already_exists": "Tenant มีอยู่แล้ว: {{reason}}",
+    "tenant_invalid_status": "สถานะปัจจุบันของ Tenant ไม่อนุญาตให้ดำเนินการนี้: {{reason}}",
+    "tenant_region_assignment_not_found": "ไม่พบการกำหนดภูมิภาคของ Tenant",
+    "tenant_member_not_found": "ไม่พบสมาชิกของ Tenant",
+    "tenant_member_already_exists": "สมาชิกของ Tenant มีอยู่แล้ว: {{reason}}",
+    "tenant_member_invalid_role": "บทบาทสมาชิกของ Tenant ไม่ถูกต้อง: {{reason}}"
+  },
+  "tenant": {
+    "sync": {
+      "already_synced": "ซิงค์แล้ว ไม่จำเป็นต้องเรียกใช้อีก",
+      "triggered": "เริ่มการซิงค์ไปยังระบบปลายทางแล้ว"
+    }
+  }
+}

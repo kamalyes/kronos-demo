@@ -1,0 +1,27 @@
+{
+  "welcome": "Welkom",
+  "success": "Succes",
+  "hello": "Hallo",
+  "goodbye": "Tot ziens",
+  "error": {
+    "product_not_found": "Product niet gevonden",
+    "product_already_exists": "Product bestaat al: {{reason}}",
+    "product_invalid_status": "Ongeldige Product-status: {{reason}}",
+    "warehouse_not_found": "Warehouse niet gevonden",
+    "warehouse_already_exists": "Warehouse bestaat al: {{reason}}",
+    "warehouse_invalid_status": "Ongeldige Warehouse-status: {{reason}}",
+    "tenant_not_found": "Tenant niet gevonden",
+    "tenant_already_exists": "Tenant bestaat al: {{reason}}",
+    "tenant_invalid_status": "De huidige status van Tenant staat deze bewerking niet toe: {{reason}}",
+    "tenant_region_assignment_not_found": "Regiotoewijzing van Tenant niet gevonden",
+    "tenant_member_not_found": "Lid van Tenant niet gevonden",
+    "tenant_member_already_exists": "Lid van Tenant bestaat al: {{reason}}",
+    "tenant_member_invalid_role": "Ongeldige ledenrol van Tenant: {{reason}}"
+  },
+  "tenant": {
+    "sync": {
+      "already_synced": "Al gesynchroniseerd, opnieuw starten is niet nodig",
+      "triggered": "Downstream-synchronisatie gestart"
+    }
+  }
+}

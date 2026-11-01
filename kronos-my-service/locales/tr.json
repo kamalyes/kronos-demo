@@ -1,0 +1,27 @@
+{
+  "welcome": "Hoş geldiniz",
+  "success": "Başarılı",
+  "hello": "Merhaba",
+  "goodbye": "Hoşça kalın",
+  "error": {
+    "product_not_found": "Product bulunamadı",
+    "product_already_exists": "Product zaten mevcut: {{reason}}",
+    "product_invalid_status": "Geçersiz Product durumu: {{reason}}",
+    "warehouse_not_found": "Warehouse bulunamadı",
+    "warehouse_already_exists": "Warehouse zaten mevcut: {{reason}}",
+    "warehouse_invalid_status": "Geçersiz Warehouse durumu: {{reason}}",
+    "tenant_not_found": "Tenant bulunamadı",
+    "tenant_already_exists": "Tenant zaten mevcut: {{reason}}",
+    "tenant_invalid_status": "Tenant öğesinin mevcut durumu bu işleme izin vermiyor: {{reason}}",
+    "tenant_region_assignment_not_found": "Tenant bölge ataması bulunamadı",
+    "tenant_member_not_found": "Tenant üyesi bulunamadı",
+    "tenant_member_already_exists": "Tenant üyesi zaten mevcut: {{reason}}",
+    "tenant_member_invalid_role": "Geçersiz Tenant üye rolü: {{reason}}"
+  },
+  "tenant": {
+    "sync": {
+      "already_synced": "Zaten eşitlendi, yeniden tetiklemek gerekmiyor",
+      "triggered": "Alt sistem eşitlemesi tetiklendi"
+    }
+  }
+}

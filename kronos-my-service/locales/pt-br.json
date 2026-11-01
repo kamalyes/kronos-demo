@@ -1,0 +1,27 @@
+{
+  "welcome": "Bem-vindo",
+  "success": "Sucesso",
+  "hello": "Olá",
+  "goodbye": "Tchau",
+  "error": {
+    "product_not_found": "Product não encontrado",
+    "product_already_exists": "Product já existe: {{reason}}",
+    "product_invalid_status": "Status de Product inválido: {{reason}}",
+    "warehouse_not_found": "Warehouse não encontrado",
+    "warehouse_already_exists": "Warehouse já existe: {{reason}}",
+    "warehouse_invalid_status": "Status de Warehouse inválido: {{reason}}",
+    "tenant_not_found": "Tenant não encontrado",
+    "tenant_already_exists": "Tenant já existe: {{reason}}",
+    "tenant_invalid_status": "O status atual de Tenant não permite esta operação: {{reason}}",
+    "tenant_region_assignment_not_found": "Atribuição de região de Tenant não encontrada",
+    "tenant_member_not_found": "Membro de Tenant não encontrado",
+    "tenant_member_already_exists": "O membro de Tenant já existe: {{reason}}",
+    "tenant_member_invalid_role": "Função de membro de Tenant inválida: {{reason}}"
+  },
+  "tenant": {
+    "sync": {
+      "already_synced": "Já sincronizado, não é necessário acionar novamente",
+      "triggered": "Sincronização downstream acionada"
+    }
+  }
+}

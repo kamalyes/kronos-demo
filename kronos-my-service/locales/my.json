@@ -1,0 +1,27 @@
+{
+  "welcome": "Welcome",
+  "success": "Success",
+  "hello": "Hello",
+  "goodbye": "Goodbye",
+  "error": {
+    "product_not_found": "Product ကို ရှာမတွေ့ပါ",
+    "product_already_exists": "Product ရှိပြီးသားဖြစ်သည်: {{reason}}",
+    "product_invalid_status": "Product အခြေအနေ မမှန်ကန်ပါ: {{reason}}",
+    "warehouse_not_found": "Warehouse ကို ရှာမတွေ့ပါ",
+    "warehouse_already_exists": "Warehouse ရှိပြီးသားဖြစ်သည်: {{reason}}",
+    "warehouse_invalid_status": "Warehouse အခြေအနေ မမှန်ကန်ပါ: {{reason}}",
+    "tenant_not_found": "Tenant ကို ရှာမတွေ့ပါ",
+    "tenant_already_exists": "Tenant ရှိပြီးသားဖြစ်သည်: {{reason}}",
+    "tenant_invalid_status": "Tenant ၏ လက်ရှိအခြေအနေသည် ဤလုပ်ဆောင်ချက်ကို ခွင့်မပြုပါ: {{reason}}",
+    "tenant_region_assignment_not_found": "Tenant ဒေသသတ်မှတ်ချက်ကို ရှာမတွေ့ပါ",
+    "tenant_member_not_found": "Tenant အဖွဲ့ဝင်ကို ရှာမတွေ့ပါ",
+    "tenant_member_already_exists": "Tenant အဖွဲ့ဝင် ရှိပြီးသားဖြစ်သည်: {{reason}}",
+    "tenant_member_invalid_role": "Tenant အဖွဲ့ဝင် အခန်းကဏ္ဍ မမှန်ကန်ပါ: {{reason}}"
+  },
+  "tenant": {
+    "sync": {
+      "already_synced": "ထပ်တူပြုပြီးဖြစ်သည်၊ ထပ်မံလုပ်ဆောင်ရန် မလိုပါ",
+      "triggered": "အောက်ပိုင်း ထပ်တူပြုမှုကို စတင်လိုက်ပါပြီ"
+    }
+  }
+}

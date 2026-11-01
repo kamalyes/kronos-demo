@@ -1,0 +1,27 @@
+{
+  "welcome": "欢迎",
+  "success": "成功",
+  "hello": "你好",
+  "goodbye": "再见",
+  "error": {
+    "product_not_found": "Product 不存在",
+    "product_already_exists": "Product 已存在：{{reason}}",
+    "product_invalid_status": "Product 状态无效：{{reason}}",
+    "warehouse_not_found": "Warehouse 不存在",
+    "warehouse_already_exists": "Warehouse 已存在：{{reason}}",
+    "warehouse_invalid_status": "Warehouse 状态无效：{{reason}}",
+    "tenant_not_found": "Tenant 不存在",
+    "tenant_already_exists": "Tenant 已存在：{{reason}}",
+    "tenant_invalid_status": "Tenant 当前状态不允许该操作：{{reason}}",
+    "tenant_region_assignment_not_found": "Tenant 地区分配不存在",
+    "tenant_member_not_found": "Tenant 成员不存在",
+    "tenant_member_already_exists": "Tenant 成员已存在：{{reason}}",
+    "tenant_member_invalid_role": "Tenant 成员角色无效：{{reason}}"
+  },
+  "tenant": {
+    "sync": {
+      "already_synced": "已同步，无需重复触发",
+      "triggered": "已触发下游同步"
+    }
+  }
+}

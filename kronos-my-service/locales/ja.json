@@ -1,0 +1,27 @@
+{
+  "welcome": "ようこそ",
+  "success": "成功",
+  "hello": "こんにちは",
+  "goodbye": "さようなら",
+  "error": {
+    "product_not_found": "Product が見つかりません",
+    "product_already_exists": "Product は既に存在します：{{reason}}",
+    "product_invalid_status": "Product のステータスが不正です：{{reason}}",
+    "warehouse_not_found": "Warehouse が見つかりません",
+    "warehouse_already_exists": "Warehouse は既に存在します：{{reason}}",
+    "warehouse_invalid_status": "Warehouse のステータスが不正です：{{reason}}",
+    "tenant_not_found": "Tenant が見つかりません",
+    "tenant_already_exists": "Tenant は既に存在します：{{reason}}",
+    "tenant_invalid_status": "Tenant の現在のステータスではこの操作を実行できません：{{reason}}",
+    "tenant_region_assignment_not_found": "Tenant の地域割り当てが見つかりません",
+    "tenant_member_not_found": "Tenant のメンバーが見つかりません",
+    "tenant_member_already_exists": "Tenant のメンバーは既に存在します：{{reason}}",
+    "tenant_member_invalid_role": "Tenant のメンバーロールが不正です：{{reason}}"
+  },
+  "tenant": {
+    "sync": {
+      "already_synced": "既に同期済みのため、再実行は不要です",
+      "triggered": "下流への同期を開始しました"
+    }
+  }
+}

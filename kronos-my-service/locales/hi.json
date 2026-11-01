@@ -1,0 +1,27 @@
+{
+  "welcome": "स्वागत है",
+  "success": "सफलता",
+  "hello": "नमस्ते",
+  "goodbye": "अलविदा",
+  "error": {
+    "product_not_found": "Product नहीं मिला",
+    "product_already_exists": "Product पहले से मौजूद है: {{reason}}",
+    "product_invalid_status": "Product की स्थिति अमान्य है: {{reason}}",
+    "warehouse_not_found": "Warehouse नहीं मिला",
+    "warehouse_already_exists": "Warehouse पहले से मौजूद है: {{reason}}",
+    "warehouse_invalid_status": "Warehouse की स्थिति अमान्य है: {{reason}}",
+    "tenant_not_found": "Tenant नहीं मिला",
+    "tenant_already_exists": "Tenant पहले से मौजूद है: {{reason}}",
+    "tenant_invalid_status": "Tenant की वर्तमान स्थिति इस कार्य की अनुमति नहीं देती: {{reason}}",
+    "tenant_region_assignment_not_found": "Tenant क्षेत्र असाइनमेंट नहीं मिला",
+    "tenant_member_not_found": "Tenant सदस्य नहीं मिला",
+    "tenant_member_already_exists": "Tenant सदस्य पहले से मौजूद है: {{reason}}",
+    "tenant_member_invalid_role": "Tenant सदस्य की भूमिका अमान्य है: {{reason}}"
+  },
+  "tenant": {
+    "sync": {
+      "already_synced": "पहले से सिंक हो चुका है, दोबारा चलाने की आवश्यकता नहीं",
+      "triggered": "डाउनस्ट्रीम सिंक शुरू किया गया"
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "welcome": "أهلاً بك",
+  "success": "نجاح",
+  "hello": "مرحباً",
+  "goodbye": "مع السلامة",
+  "error": {
+    "product_not_found": "Product غير موجود",
+    "product_already_exists": "Product موجود بالفعل: {{reason}}",
+    "product_invalid_status": "حالة Product غير صالحة: {{reason}}",
+    "warehouse_not_found": "Warehouse غير موجود",
+    "warehouse_already_exists": "Warehouse موجود بالفعل: {{reason}}",
+    "warehouse_invalid_status": "حالة Warehouse غير صالحة: {{reason}}",
+    "tenant_not_found": "Tenant غير موجود",
+    "tenant_already_exists": "Tenant موجود بالفعل: {{reason}}",
+    "tenant_invalid_status": "الحالة الحالية لـ Tenant لا تسمح بهذه العملية: {{reason}}",
+    "tenant_region_assignment_not_found": "تعيين منطقة Tenant غير موجود",
+    "tenant_member_not_found": "عضو Tenant غير موجود",
+    "tenant_member_already_exists": "عضو Tenant موجود بالفعل: {{reason}}",
+    "tenant_member_invalid_role": "دور عضو Tenant غير صالح: {{reason}}"
+  },
+  "tenant": {
+    "sync": {
+      "already_synced": "تمت المزامنة بالفعل، لا حاجة لإعادة التشغيل",
+      "triggered": "تم بدء المزامنة مع الخدمة التالية"
+    }
+  }
+}

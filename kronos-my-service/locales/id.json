@@ -1,0 +1,27 @@
+{
+  "welcome": "Selamat datang",
+  "success": "Berhasil",
+  "hello": "Halo",
+  "goodbye": "Selamat tinggal",
+  "error": {
+    "product_not_found": "Product tidak ditemukan",
+    "product_already_exists": "Product sudah ada: {{reason}}",
+    "product_invalid_status": "Status Product tidak valid: {{reason}}",
+    "warehouse_not_found": "Warehouse tidak ditemukan",
+    "warehouse_already_exists": "Warehouse sudah ada: {{reason}}",
+    "warehouse_invalid_status": "Status Warehouse tidak valid: {{reason}}",
+    "tenant_not_found": "Tenant tidak ditemukan",
+    "tenant_already_exists": "Tenant sudah ada: {{reason}}",
+    "tenant_invalid_status": "Status Tenant saat ini tidak mengizinkan operasi ini: {{reason}}",
+    "tenant_region_assignment_not_found": "Penetapan wilayah Tenant tidak ditemukan",
+    "tenant_member_not_found": "Anggota Tenant tidak ditemukan",
+    "tenant_member_already_exists": "Anggota Tenant sudah ada: {{reason}}",
+    "tenant_member_invalid_role": "Peran anggota Tenant tidak valid: {{reason}}"
+  },
+  "tenant": {
+    "sync": {
+      "already_synced": "Sudah disinkronkan, tidak perlu dipicu lagi",
+      "triggered": "Sinkronisasi downstream telah dipicu"
+    }
+  }
+}

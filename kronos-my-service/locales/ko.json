@@ -1,0 +1,27 @@
+{
+  "welcome": "환영합니다",
+  "success": "성공",
+  "hello": "안녕하세요",
+  "goodbye": "안녕히 가세요",
+  "error": {
+    "product_not_found": "Product을 찾을 수 없습니다",
+    "product_already_exists": "Product이 이미 존재합니다: {{reason}}",
+    "product_invalid_status": "Product 상태가 올바르지 않습니다: {{reason}}",
+    "warehouse_not_found": "Warehouse을 찾을 수 없습니다",
+    "warehouse_already_exists": "Warehouse이 이미 존재합니다: {{reason}}",
+    "warehouse_invalid_status": "Warehouse 상태가 올바르지 않습니다: {{reason}}",
+    "tenant_not_found": "Tenant을 찾을 수 없습니다",
+    "tenant_already_exists": "Tenant이 이미 존재합니다: {{reason}}",
+    "tenant_invalid_status": "Tenant의 현재 상태에서는 이 작업을 수행할 수 없습니다: {{reason}}",
+    "tenant_region_assignment_not_found": "Tenant 지역 할당을 찾을 수 없습니다",
+    "tenant_member_not_found": "Tenant 구성원을 찾을 수 없습니다",
+    "tenant_member_already_exists": "Tenant 구성원이 이미 존재합니다: {{reason}}",
+    "tenant_member_invalid_role": "Tenant 구성원 역할이 올바르지 않습니다: {{reason}}"
+  },
+  "tenant": {
+    "sync": {
+      "already_synced": "이미 동기화되어 다시 실행할 필요가 없습니다",
+      "triggered": "다운스트림 동기화가 시작되었습니다"
+    }
+  }
+}

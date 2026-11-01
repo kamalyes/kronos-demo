@@ -1,0 +1,559 @@
+# =====================================================================
+# MyService Service - Gateway 配置（本地开发）
+# 文件名约定: kronos-my-service-{environment}.yaml
+# =====================================================================
+
+module-name: gateway
+name: "MyService Service Gateway (dev)"
+enabled: true
+debug: true
+version: "v1.0.0"
+environment: "dev"
+
+# ===========================================
+# JSON 序列化
+# ===========================================
+json:
+    use-proto-names: true
+    emit-unpopulated: true
+    discard-unknown: true
+
+# ===========================================
+# HTTP Server (gRPC-Gateway)
+# ===========================================
+http:
+    module-name: server
+    host: "0.0.0.0"
+    port: 8190
+    network: tcp4
+    read-timeout: 30
+    read-header-timeout: 5
+    write-timeout: 30
+    idle-timeout: 60
+    max-header-bytes: 1048576
+    enable-tls: false
+    tls:
+        cert-file: ""
+        key-file: ""
+        ca-file: ""
+    headers:
+        x-server: myservice
+    enable-gzip-compress: true
+    gzip-compression-level: 5
+    gzip-min-size: 1024
+    enable-http2: true
+    http2:
+        max-concurrent-streams: 250
+        max-read-frame-size: 1048576
+        initial-window-size: 1048576
+        initial-conn-window-size: 2097152
+
+# ===========================================
+# gRPC Server
+# ===========================================
+grpc:
+    server:
+        enable: true
+        host: "0.0.0.0"
+        port: 9190
+        network: tcp4
+        max-recv-msg-size: 4194304
+        max-send-msg-size: 4194304
+        keepalive-time: 120
+        keepalive-timeout: 10
+        connection-timeout: 20
+        enable-reflection: true
+    # gRPC 客户端：key 就是服务名，代码里用 constants.RemoteService* 引用同一个字符串
+    #
+    # 为什么要用这里的配置而不是在代码里 grpc.NewClient：网关的连接池
+    # （go-rpc-gateway/cpool/grpc）在拨号时自动挂上一整条客户端拦截器链——
+    # 请求上下文透传（trace_id / request_id / tenant_id / authorization /
+    # accept-language 等三十余个字段）、调用日志、健康检查短路，
+    # 外加 otelgrpc 客户端 handler 打通全链路 trace。
+    # 自己拨号这些全都没有，表现为下游日志里租户和链路字段全空。
+    #
+    # endpoints 留空或整个 key 不存在时，InitClient 返回 ok=false，
+    # 调用方按「未配置」处理（见 service/common/client.go），不会启动失败。
+    #
+    # [EN] The key is the service name, referenced in code through constants.RemoteService*.
+    # Use this config rather than dialing directly: the gateway's connection pool attaches the
+    # whole client interceptor chain when it dials, propagating request context (trace id,
+    # request id, tenant id, authorization, accept-language and some thirty more fields), call
+    # logging and health-check short-circuiting, plus the otelgrpc client handler for end-to-end
+    # tracing. A hand-rolled dial gets none of it, which shows up as empty tenant and trace
+    # fields in the downstream logs. An absent key or empty endpoints makes InitClient return
+    # false and the caller treats the client as unconfigured instead of failing to start.
+    clients:
+        kronos-key-service:
+            service-name: kronos-key-service
+            # 本地没有这个下游时留空即可：同步 worker 会跳过，不影响启动
+            # [EN] Leave empty when no such downstream exists locally; the worker skips it
+            endpoints: []
+            network: tcp4
+            connection-timeout: 5
+            keepalive-time: 120
+            keepalive-timeout: 10
+            max-recv-msg-size: 4194304
+            max-send-msg-size: 4194304
+            # false：下游不可用时立刻失败，而不是把调用方挂住等它起来
+            # [EN] false: fail fast when the downstream is down instead of blocking the caller
+            wait-for-ready: false
+        kronos-inventory-service:
+            service-name: kronos-inventory-service
+            # 本地没有这个下游时留空即可：同步 worker 会跳过，不影响启动
+            # [EN] Leave empty when no such downstream exists locally; the worker skips it
+            endpoints: []
+            network: tcp4
+            connection-timeout: 5
+            keepalive-time: 120
+            keepalive-timeout: 10
+            max-recv-msg-size: 4194304
+            max-send-msg-size: 4194304
+            # false：下游不可用时立刻失败，而不是把调用方挂住等它起来
+            # [EN] false: fail fast when the downstream is down instead of blocking the caller
+            wait-for-ready: false
+
+# ===========================================
+# 缓存（Redis）
+# ===========================================
+cache:
+    module-name: cache
+    type: redis
+    enabled: true
+    default-ttl: 24h
+    key-prefix: 'my:'
+    serializer: json
+    memory:
+        module-name: memory
+        capacity: 1000
+        default-ttl: 30m0s
+        cleanup-size: 100
+        max-size: 0
+    redis:
+        module-name: redis
+        addr: localhost:6379
+        addrs:
+            - localhost:6379
+        password: ""
+        db: 0
+        max-retries: 3
+        pool-size: 10
+        min-idle-conns: 0
+        max-conn-age: 30m
+        pool-timeout: 4s
+        idle-timeout: 5m
+        read-timeout: 3s
+        write-timeout: 3s
+        cluster-mode: false
+
+# ===========================================
+# 数据库（MySQL）
+# ===========================================
+database:
+    # 是否启用
+    enabled: false
+    # 关系型数据库配置
+    relational:
+        enabled: false
+        default: mysql
+        # MySQL配置
+        mysql:
+            module-name: mysql
+            host: localhost
+            port: "3306"
+            config: charset=utf8mb4&parseTime=True&loc=Local
+            log-level: info
+            slow-threshold: 100
+            ignore-record-not-found-error: false
+            db-name: my_service
+            username: root
+            password: mysql_password
+            max-idle-conns: 10
+            max-open-conns: 100
+            conn-max-idle-time: 300
+            conn-max-life-time: 3600
+            skip-default-transaction: false
+            prepare-stmt: true
+            disable-foreign-key-constraint-when-migrating: true
+            disable-nested-transaction: false
+            allow-global-update: false
+            query-fields: true
+            create-batch-size: 100
+            singular-table: true
+        # PostgreSQL配置
+        postgresql:
+            module-name: postgresql
+            host: localhost
+            port: "5432"
+            config: sslmode=disable
+            log-level: info
+            slow-threshold: 100
+            ignore-record-not-found-error: false
+            db-name: my_service
+            username: postgres
+            password: postgres_password
+            max-idle-conns: 10
+            max-open-conns: 100
+            conn-max-idle-time: 300
+            conn-max-life-time: 3600
+            skip-default-transaction: false
+            prepare-stmt: true
+            disable-foreign-key-constraint-when-migrating: true
+            disable-nested-transaction: false
+            allow-global-update: false
+            query-fields: true
+            create-batch-size: 100
+            singular-table: true
+        # SQLite配置
+        sqlite:
+            module-name: sqlite
+            config: _foreign_keys=on
+            log-level: info
+            slow-threshold: 100
+            ignore-record-not-found-error: false
+            db-path: ./data.db
+            vacuum: false
+            max-idle-conns: 10
+            max-open-conns: 1
+            conn-max-idle-time: 300
+            conn-max-life-time: 3600
+            skip-default-transaction: false
+            prepare-stmt: true
+            disable-foreign-key-constraint-when-migrating: true
+            disable-nested-transaction: false
+            allow-global-update: false
+            query-fields: true
+            create-batch-size: 100
+            singular-table: true
+        # CockroachDB配置
+        cockroachdb:
+            module-name: cockroachdb
+            host: localhost
+            port: "26257"
+            config: sslmode=disable
+            log-level: info
+            slow-threshold: 100
+            ignore-record-not-found-error: false
+            db-name: my_service
+            username: root
+            password: ""
+            ssl-mode: disable
+            ssl-root-cert: ""
+            ssl-cert: ""
+            ssl-key: ""
+            application-name: go-config
+            max-idle-conns: 10
+            max-open-conns: 100
+            conn-max-idle-time: 300
+            conn-max-life-time: 3600
+            skip-default-transaction: false
+            prepare-stmt: true
+            disable-foreign-key-constraint-when-migrating: true
+            disable-nested-transaction: false
+            allow-global-update: false
+            query-fields: true
+            create-batch-size: 100
+            singular-table: true
+            max-retries: 3
+    # 非关系型数据库配置
+    non-relational:
+        enabled: false
+        default: clickhouse
+        # ClickHouse配置
+        clickhouse:
+            module-name: clickhouse
+            host: localhost
+            port: "9000"
+            config: dial_timeout=10s&read_timeout=20s
+            log-level: info
+            slow-threshold: 200
+            ignore-record-not-found-error: false
+            db-name: my_service
+            username: default
+            password: ""
+            protocol: native
+            cluster: ""
+            compress: true
+            debug: false
+            secure: false
+            dial-timeout: 10
+            read-timeout: 20
+            max-idle-conns: 5
+            max-open-conns: 20
+            conn-max-idle-time: 300
+            conn-max-life-time: 3600
+            skip-default-transaction: true
+            prepare-stmt: false
+            disable-foreign-key-constraint-when-migrating: true
+            disable-nested-transaction: true
+            allow-global-update: false
+            query-fields: true
+            create-batch-size: 1000
+            singular-table: true
+
+# ===========================================
+# 健康检查
+# ===========================================
+health:
+    module-name: health
+    enabled: true
+    path: /health
+    port: 8191
+    timeout: 30
+    redis:
+        enabled: false
+        path: /health/redis
+        timeout: 5
+    mysql:
+        enabled: false
+        path: /health/mysql
+        timeout: 5
+
+# ===========================================
+# 监控
+# ===========================================
+monitoring:
+    module-name: monitoring
+    enabled: true
+    metrics:
+        enabled: true
+        request-count: true
+        duration: true
+        response-size: true
+        request-size: true
+        buckets: [0.001, 0.01, 0.1, 0.3, 0.6, 1, 3, 6, 9, 20, 30, 60, 90, 120]
+        enable-open-metrics: false
+        custom-metrics: []
+    alerting:
+        enabled: false
+        rules: []
+        webhooks: []
+
+# ===========================================
+# 安全
+# ===========================================
+security:
+    module-name: security
+    enabled: false
+    csp:
+        enabled: true
+        mode: development
+        custom: ""
+
+# ===========================================
+# 请求上下文
+# ===========================================
+request-context:
+    authorization-sources:
+        - { type: header, key: Authorization }
+        - { type: query, key: authorization }
+    request-id-sources:
+        - { type: header, key: X-Request-Id }
+    trace-id-sources:
+        - { type: header, key: X-Trace-Id }
+    real-ip-sources:
+        - { type: header, key: X-Real-IP }
+    forwarded-for-sources:
+        - { type: header, key: X-Forwarded-For }
+    forwarded-proto-sources:
+        - { type: header, key: X-Forwarded-Proto }
+    client-id-sources:
+        - { type: header, key: X-Client-ID }
+    user-id-sources:
+        - { type: header, key: X-User-ID }
+    tenant-id-sources:
+        - { type: header, key: X-Tenant-ID }
+    timezone-sources:
+        - { type: header, key: X-Timezone }
+
+# ===========================================
+# 中间件
+# ===========================================
+middleware:
+    module-name: middleware
+    enabled: true
+    logging:
+        module-name: logging
+        enabled: true
+        level: debug
+        format: json
+        output: console
+        file-path: ""
+        max-size: 100
+        max-backups: 3
+        max-age: 28
+        compress: true
+        skip-paths:
+            - /health
+            - /metrics
+            - /favicon.ico
+            - /ping
+            - /readiness
+            - /liveness
+        enable-request: true
+        enable-response: true
+        max-body-size: 4096
+        sensitive-mask: "***REDACTED***"
+        sensitive-keys:
+            - password
+            - passwd
+            - token
+            - access_token
+            - refresh_token
+            - secret
+            - authorization
+            - api_key
+            - apikey
+        loggable-content-types:
+            - application/json
+            - application/xml
+            - application/x-www-form-urlencoded
+            - text/
+    recovery:
+        module-name: recovery
+        enabled: true
+        enable-stack: true
+        stack-size: 4096
+        enable-debug: true
+        error-message: 服务器内部错误
+        log-level: error
+        enable-notify: false
+        print-stack: true
+    metrics:
+        module-name: metrics
+        enabled: true
+        path: /metrics
+        namespace: my
+        subsystem: gateway
+        skip-paths: [/health, /metrics, /swagger, /debug/pprof]
+        buckets: [0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1.0, 2.5, 5.0, 10.0, 30.0]
+        request-count: true
+        duration: true
+        request-size: true
+        response-size: true
+    request-id:
+        module-name: requestid
+        enabled: true
+        header-name: X-Request-ID
+        generator: uuid
+    i18n:
+        module-name: i18n
+        enabled: true
+        default-language: en
+        supported-languages: [en, zh]
+        language-mapping:
+            en-us: en
+            zh-cn: zh
+            zh-tw: zh
+        resolution-order: [standard]
+        detection-order: [header]
+        language-param: lang
+        language-header: Accept-Language
+        messages-path: ./locales
+        custom-message-paths: {}
+        enable-fallback: true
+        cookie-name: language
+    pprof:
+        module-name: PProf
+        enabled: false
+        path-prefix: /debug/pprof
+        port: 6160
+        enable-profiles:
+            cpu: true
+            memory: true
+            goroutine: true
+            heap: true
+            allocs: true
+        sampling:
+            cpu-rate: 100
+            memory-rate: 524288
+            block-rate: 1
+            mutex-fraction: 1
+        authentication:
+            enabled: false
+        gateway:
+            enabled: false
+        web-interface:
+            enabled: true
+            title: PProf
+            description: Go Performance Profiling
+            show-scenarios: true
+    circuit-breaker:
+        module-name: circuit_breaker
+        enabled: false
+        failure-threshold: 5
+        success-threshold: 2
+        timeout: 30000000000
+        volume-threshold: 10
+        sliding-window-size: 100
+        sliding-window-bucket: 1000000000
+        prevention-paths: [/api/]
+        exclude-paths: [/health, /metrics, /debug]
+    signature:
+        module-name: signature
+        enabled: false
+        type: hmac
+        secret-key: "change-me-in-production"
+        nonce-key-prefix: 'nonce:'
+        nonce-ttl: 10m
+        require-timestamp: false
+        require-nonce: false
+        algorithm: SHA256
+        timeout-window: 5m
+        ignore-paths: [/health, /metrics, /ping, /swagger, /debug/pprof]
+        skip-query: false
+        skip-body: false
+    alerting:
+        module-name: alerting
+        enabled: false
+        webhooks: []
+        channels: []
+
+# ===========================================
+# CORS
+# ===========================================
+cors:
+    module-name: cors
+    allowed-origins: ['*']
+    allowed-methods: [GET, POST, PUT, DELETE, OPTIONS, PATCH, HEAD]
+    allowed-headers:
+        - '*'
+        - Authorization
+        - Content-Type
+        - X-Request-ID
+        - X-Trace-ID
+        - X-User-ID
+        - X-Tenant-ID
+        - Origin
+        - Accept
+        - Accept-Language
+    max-age: "86400"
+    allowed-all-origins: true
+    allowed-all-methods: true
+    exposed-headers: [X-Request-ID, X-Trace-ID, Content-Length, Content-Type]
+    allow-credentials: false
+    options-response-code: 204
+
+# ===========================================
+# 限流
+# ===========================================
+rate-limit:
+    module-name: ratelimit
+    enabled: true
+    strategy: token-bucket
+    default-scope: global
+    global-limit:
+        requests-per-second: 1000
+        burst-size: 2000
+        window-size: 1m0s
+        block-duration: 1m0s
+    routes: []
+    ip-rules: []
+    user-rules: []
+    storage:
+        type: memory
+        key-prefix: 'rate_limit:'
+        clean-interval: 1m
+        redis: null
+    custom-rule-loader: ""
+    enable-dynamic-rule: false

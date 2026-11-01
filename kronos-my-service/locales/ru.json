@@ -1,0 +1,27 @@
+{
+  "welcome": "Добро пожаловать",
+  "success": "Успешно",
+  "hello": "Здравствуйте",
+  "goodbye": "До свидания",
+  "error": {
+    "product_not_found": "Product не найден",
+    "product_already_exists": "Product уже существует: {{reason}}",
+    "product_invalid_status": "Недопустимый статус Product: {{reason}}",
+    "warehouse_not_found": "Warehouse не найден",
+    "warehouse_already_exists": "Warehouse уже существует: {{reason}}",
+    "warehouse_invalid_status": "Недопустимый статус Warehouse: {{reason}}",
+    "tenant_not_found": "Tenant не найден",
+    "tenant_already_exists": "Tenant уже существует: {{reason}}",
+    "tenant_invalid_status": "Текущий статус Tenant не позволяет выполнить эту операцию: {{reason}}",
+    "tenant_region_assignment_not_found": "Назначение региона для Tenant не найдено",
+    "tenant_member_not_found": "Участник Tenant не найден",
+    "tenant_member_already_exists": "Участник Tenant уже существует: {{reason}}",
+    "tenant_member_invalid_role": "Недопустимая роль участника Tenant: {{reason}}"
+  },
+  "tenant": {
+    "sync": {
+      "already_synced": "Уже синхронизировано, повторный запуск не требуется",
+      "triggered": "Синхронизация с нижестоящим сервисом запущена"
+    }
+  }
+}

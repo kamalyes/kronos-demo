@@ -1,0 +1,27 @@
+{
+  "welcome": "Välkommen",
+  "success": "Lyckades",
+  "hello": "Hej",
+  "goodbye": "Hejdå",
+  "error": {
+    "product_not_found": "Product hittades inte",
+    "product_already_exists": "Product finns redan: {{reason}}",
+    "product_invalid_status": "Ogiltig Product-status: {{reason}}",
+    "warehouse_not_found": "Warehouse hittades inte",
+    "warehouse_already_exists": "Warehouse finns redan: {{reason}}",
+    "warehouse_invalid_status": "Ogiltig Warehouse-status: {{reason}}",
+    "tenant_not_found": "Tenant hittades inte",
+    "tenant_already_exists": "Tenant finns redan: {{reason}}",
+    "tenant_invalid_status": "Nuvarande status för Tenant tillåter inte den här åtgärden: {{reason}}",
+    "tenant_region_assignment_not_found": "Regiontilldelning för Tenant hittades inte",
+    "tenant_member_not_found": "Medlem i Tenant hittades inte",
+    "tenant_member_already_exists": "Medlem i Tenant finns redan: {{reason}}",
+    "tenant_member_invalid_role": "Ogiltig medlemsroll för Tenant: {{reason}}"
+  },
+  "tenant": {
+    "sync": {
+      "already_synced": "Redan synkroniserad, ingen ny körning behövs",
+      "triggered": "Nedströmssynkronisering startad"
+    }
+  }
+}

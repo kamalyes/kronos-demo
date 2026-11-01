@@ -1,0 +1,27 @@
+{
+  "welcome": "Welcome",
+  "success": "Success",
+  "hello": "Hello",
+  "goodbye": "Goodbye",
+  "error": {
+    "product_not_found": "Product نہیں ملا",
+    "product_already_exists": "Product پہلے سے موجود ہے: {{reason}}",
+    "product_invalid_status": "Product کی حالت غلط ہے: {{reason}}",
+    "warehouse_not_found": "Warehouse نہیں ملا",
+    "warehouse_already_exists": "Warehouse پہلے سے موجود ہے: {{reason}}",
+    "warehouse_invalid_status": "Warehouse کی حالت غلط ہے: {{reason}}",
+    "tenant_not_found": "Tenant نہیں ملا",
+    "tenant_already_exists": "Tenant پہلے سے موجود ہے: {{reason}}",
+    "tenant_invalid_status": "Tenant کی موجودہ حالت اس عمل کی اجازت نہیں دیتی: {{reason}}",
+    "tenant_region_assignment_not_found": "Tenant کی علاقائی تخصیص نہیں ملی",
+    "tenant_member_not_found": "Tenant کا رکن نہیں ملا",
+    "tenant_member_already_exists": "Tenant کا رکن پہلے سے موجود ہے: {{reason}}",
+    "tenant_member_invalid_role": "Tenant کے رکن کا کردار غلط ہے: {{reason}}"
+  },
+  "tenant": {
+    "sync": {
+      "already_synced": "پہلے سے ہم آہنگ ہے، دوبارہ چلانے کی ضرورت نہیں",
+      "triggered": "ڈاؤن اسٹریم ہم آہنگی شروع کر دی گئی"
+    }
+  }
+}
