@@ -1,0 +1,7 @@
+.DS_Store
+
+# 这个目录不是本 demo 的一部分：它是 kronos-share-proto-template 按
+# ObjectPrefix=demo 渲染出来的协议中心（package demo.api.*），而跑起来的四个服务
+# 依赖的是已发布的 kronos-share-proto-template@build（package kronos.api.*），
+# 没有任何 go.mod 引用它 要把它一起纳管就删掉下面这行
+kronos-share-proto/
