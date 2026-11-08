@@ -11,7 +11,7 @@
 package bootstrap
 
 import (
-	pbmo "github.com/kamalyes/go-pbmo"
+	pbmo "github.com/kamalyes/go-toolbox/pkg/pbmo"
 	"github.com/kamalyes/kronos-my-service/models"
 	commonpb "github.com/kamalyes/kronos-share-proto-template/pb/common"
 )

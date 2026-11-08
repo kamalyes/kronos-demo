@@ -11,15 +11,15 @@
 package bootstrap
 
 import (
-	bizerror "github.com/kamalyes/go-bizerror"
+	gwerrors "github.com/kamalyes/go-rpc-gateway/errors"
 	gwglobal "github.com/kamalyes/go-rpc-gateway/global"
 
 	"github.com/kamalyes/kronos-my-service/errcodes"
 )
 
-// registerErrorCodes 把本服务专属错误码的状态映射注入 go-bizerror 的注册中心
+// registerErrorCodes 把本服务专属错误码的状态映射注入 go-rpc-gateway/errors 的注册中心
 //
-// 为什么是启动期注册而不是在 errcodes 包里 init()：注册中心在 go-bizerror 里，
+// 为什么是启动期注册而不是在 errcodes 包里 init()：注册中心在 go-rpc-gateway/errors 里，
 // 把注册写成本服务 errcodes 包的 init() 就得让每个用到码的地方都 import 那个包
 // 才能保证 init 跑过——而只用码字符串、不 import 包的写法（比如从配置里读一个码）
 // 会静默绕过注册于是同一个码在不同调用路径上给出不同状态码
@@ -32,7 +32,7 @@ import (
 // 注册是幂等的（后注册覆盖先注册），重复调用不会累积副作用
 //
 // [EN] Registered during startup rather than from an init() in the errcodes package: the
-// registry lives in go-bizerror, so an init() there would only run for call sites that import
+// registry lives in go-rpc-gateway/errors, so an init() there would only run for call sites that import
 // the package, and any path that uses a code as a bare string — reading one from configuration,
 // say — would silently bypass registration and hand out a different status code for the same
 // code. One explicit call gives registration a single entry point at a single moment. It sits
@@ -41,6 +41,6 @@ import (
 // otherwise fall back to 500 instead of its real status. Registration is idempotent.
 func registerErrorCodes() {
 	mappings := errcodes.Mappings()
-	bizerror.RegisterMany(mappings)
+	gwerrors.RegisterMany(mappings)
 	gwglobal.LOGGER.Info("business error codes registered: %d", len(mappings))
 }

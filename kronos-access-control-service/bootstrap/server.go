@@ -13,11 +13,11 @@ package bootstrap
 import (
 	"fmt"
 
+	gateway "github.com/kamalyes/go-rpc-gateway"
+	goconfig "github.com/kamalyes/go-rpc-gateway/config"
+	gwglobal "github.com/kamalyes/go-rpc-gateway/global"
 	"github.com/kamalyes/kronos-access-control-service/constants"
 	authsvc "github.com/kamalyes/kronos-access-control-service/service/auth"
-	goconfig "github.com/kamalyes/go-config"
-	gateway "github.com/kamalyes/go-rpc-gateway"
-	gwglobal "github.com/kamalyes/go-rpc-gateway/global"
 	"google.golang.org/grpc"
 )
 

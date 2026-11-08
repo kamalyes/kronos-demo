@@ -14,13 +14,13 @@ import (
 	"context"
 	"strings"
 
+	goconfig "github.com/kamalyes/go-rpc-gateway/config"
+	gwglobal "github.com/kamalyes/go-rpc-gateway/global"
+	gwmiddleware "github.com/kamalyes/go-rpc-gateway/middleware"
 	"github.com/kamalyes/kronos-access-control-service/constants"
 	pb "github.com/kamalyes/kronos-share-proto-template/pb/access_control"
 	commonpb "github.com/kamalyes/kronos-share-proto-template/pb/common"
 	enumspb "github.com/kamalyes/kronos-share-proto-template/pb/enums"
-	goconfig "github.com/kamalyes/go-config"
-	gwglobal "github.com/kamalyes/go-rpc-gateway/global"
-	gwmiddleware "github.com/kamalyes/go-rpc-gateway/middleware"
 )
 
 // ============================================================================

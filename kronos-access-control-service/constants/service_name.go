@@ -15,7 +15,7 @@ import "strings"
 
 // ServiceName 服务名称
 //
-// 同时是配置文件前缀：go-config 按 <前缀>-<环境别名>.yaml 匹配，
+// 同时是配置文件前缀：go-rpc-gateway/config 按 <前缀>-<环境别名>.yaml 匹配，
 // bootstrap 用 WithPrefix(ServiceName) 取它，resources/ 下的文件名由同一个
 // kopy 变量渲染，所以两者不可能分叉。
 //

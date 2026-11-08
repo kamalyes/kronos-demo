@@ -13,11 +13,11 @@ package catalog
 import (
 	"context"
 
-	bizerror "github.com/kamalyes/go-bizerror"
-	pbmo "github.com/kamalyes/go-pbmo"
+	gwerrors "github.com/kamalyes/go-rpc-gateway/errors"
 	gwglobal "github.com/kamalyes/go-rpc-gateway/global"
 	gwmiddleware "github.com/kamalyes/go-rpc-gateway/middleware"
 	sqltypes "github.com/kamalyes/go-sqlbuilder/types"
+	pbmo "github.com/kamalyes/go-toolbox/pkg/pbmo"
 	"github.com/kamalyes/kronos-my-service/errcodes"
 	"github.com/kamalyes/kronos-my-service/models"
 	"github.com/kamalyes/kronos-my-service/repository"
@@ -52,11 +52,11 @@ func NewProductService(repo *repository.ProductRepository) *ProductService {
 // ProductCreate 创建
 //
 // 参数校验不在这里写：协议中心的 proto 字段上注入了 @inject_tag: validate:"..."，
-// go-rpc-gateway 已把基于 go-argus 的 struct tag 校验拦截器挂在链上，
+// go-rpc-gateway 已把基于 go-toolbox/pkg/argus 的 struct tag 校验拦截器挂在链上，
 // 走到这里时 req 的格式约束已经满足。这里只做格式之外的业务规则（唯一性之类）。
 //
 // [EN] Field validation is not written here: the hub injects validate tags into the proto
-// fields and go-rpc-gateway runs the go-argus struct-tag interceptor, so format constraints
+// fields and go-rpc-gateway runs the go-toolbox/pkg/argus struct-tag interceptor, so format constraints
 // already hold. Only business rules beyond format belong here.
 func (s *ProductService) ProductCreate(
 	ctx context.Context, req *pb.ProductCreateRequest,
@@ -75,13 +75,13 @@ func (s *ProductService) ProductCreate(
 		// 用实体专属码而不是通用的 BizErrCodeConflict：通用码只说「冲突了」，
 		// 调用方还得猜是哪个实体的哪个字段撞了，而它要据此决定是换个编码重试
 		// 还是提示用户改输入带 {reason} 模板把重复的那个值一并带回，
-		// 文案由 go-bizerror 按请求语言渲染，这里不拼人类可读的句子
+		// 文案由 go-rpc-gateway/errors 按请求语言渲染，这里不拼人类可读的句子
 		// [EN] The entity's own code rather than the generic conflict: the generic one says only
 		// that something collided and leaves the caller guessing which entity and field, when
 		// that is exactly what it needs in order to choose between retrying with another code
 		// and asking the user to change the input. The templated code carries the duplicate
-		// value back, and go-bizerror renders the message in the request language
-		return nil, bizerror.ToGRPCErrorWithTemplate(ctx, errcodes.BizErrCodeProductAlreadyExists,
+		// value back, and go-rpc-gateway/errors renders the message in the request language
+		return nil, gwerrors.ToGRPCErrorWithTemplate(ctx, errcodes.BizErrCodeProductAlreadyExists,
 			map[string]any{"reason": req.GetCode()})
 	}
 
@@ -125,11 +125,11 @@ func (s *ProductService) ProductGet(
 		return nil, common.DBError(ctx)
 	}
 	if model == nil {
-		// 实体专属 not_found：码值以 _not_found 结尾，go-bizerror 的后缀规则
+		// 实体专属 not_found：码值以 _not_found 结尾，go-rpc-gateway/errors 的后缀规则
 		// 本就能映射成 NotFound，errcodes.Mappings 里仍然逐条登记，理由见那里
-		// [EN] The entity's own not-found. Its value ends in _not_found, which go-bizerror's
+		// [EN] The entity's own not-found. Its value ends in _not_found, which go-rpc-gateway/errors's
 		// suffix rule already maps to NotFound; Mappings lists it anyway and explains why
-		return nil, bizerror.ToGRPCError(ctx, errcodes.BizErrCodeProductNotFound)
+		return nil, gwerrors.ToGRPCError(ctx, errcodes.BizErrCodeProductNotFound)
 	}
 
 	info, err := model.ToPB(ctx)
@@ -193,7 +193,7 @@ func (s *ProductService) ProductUpdate(
 		return nil, common.DBError(ctx)
 	}
 	if model == nil {
-		return nil, bizerror.ToGRPCError(ctx, errcodes.BizErrCodeProductNotFound)
+		return nil, gwerrors.ToGRPCError(ctx, errcodes.BizErrCodeProductNotFound)
 	}
 
 	builder := pbmo.NewUpdates().
@@ -234,7 +234,7 @@ func (s *ProductService) ProductUpdate(
 		return nil, common.DBError(ctx)
 	}
 	if fresh == nil {
-		return nil, bizerror.ToGRPCError(ctx, errcodes.BizErrCodeProductNotFound)
+		return nil, gwerrors.ToGRPCError(ctx, errcodes.BizErrCodeProductNotFound)
 	}
 	info, err := fresh.ToPB(ctx)
 	if err != nil {
@@ -253,11 +253,11 @@ func (s *ProductService) ProductUpdateStatus(
 	}
 
 	// 枚举的允许值由业务方法校验，不用 oneof 系列规则：
-	// go-argus 会把 protobuf 枚举格式化成名称再比较，数字候选值会误拒合法请求
+	// go-toolbox/pkg/argus 会把 protobuf 枚举格式化成名称再比较，数字候选值会误拒合法请求
 	// （协议中心的 proto 规范第 7 节写了这条）
 	// [EN] Allowed enum values are checked here rather than with oneof-style tags
 	if req.GetStatus() == enumspb.CommonStatus_COMMON_STATUS_UNSPECIFIED {
-		return nil, bizerror.ToGRPCErrorWithTemplate(ctx, errcodes.BizErrCodeProductInvalidStatus,
+		return nil, gwerrors.ToGRPCErrorWithTemplate(ctx, errcodes.BizErrCodeProductInvalidStatus,
 			map[string]any{"reason": req.GetStatus().String()})
 	}
 
@@ -316,7 +316,7 @@ func (s *ProductService) ProductBatchDelete(
 			results = append(results, &commonpb.BatchResult{
 				Id:           id,
 				Success:      false,
-				ErrorMessage: gwmiddleware.GetMsgByKey(ctx, bizerror.BizErrCodeDatabaseOperationFailed),
+				ErrorMessage: gwmiddleware.GetMsgByKey(ctx, gwerrors.BizErrCodeDatabaseOperationFailed),
 			})
 			continue
 		}

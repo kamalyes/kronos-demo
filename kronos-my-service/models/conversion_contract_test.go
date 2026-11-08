@@ -17,7 +17,7 @@ import (
 	"testing"
 	"time"
 
-	pbmo "github.com/kamalyes/go-pbmo"
+	pbmo "github.com/kamalyes/go-toolbox/pkg/pbmo"
 	commonpb "github.com/kamalyes/kronos-share-proto-template/pb/common"
 	enumspb "github.com/kamalyes/kronos-share-proto-template/pb/enums"
 	"google.golang.org/protobuf/runtime/protoimpl"

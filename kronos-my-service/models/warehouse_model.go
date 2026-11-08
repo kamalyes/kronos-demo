@@ -14,7 +14,9 @@ import (
 	"context"
 	"time"
 
-	bizerror "github.com/kamalyes/go-bizerror"
+	gwerrors "github.com/kamalyes/go-rpc-gateway/errors"
+
+	pbmo "github.com/kamalyes/go-toolbox/pkg/pbmo"
 	commonpb "github.com/kamalyes/kronos-share-proto-template/pb/common"
 	enumspb "github.com/kamalyes/kronos-share-proto-template/pb/enums"
 )
@@ -59,14 +61,14 @@ func (m *WarehouseModel) GetTenantID() string { return m.TenantId }
 
 // ToPB 转换为协议中心的 WarehouseInfo
 func (m *WarehouseModel) ToPB(ctx context.Context) (*commonpb.WarehouseInfo, error) {
-	return bizerror.ToPB[WarehouseModel, commonpb.WarehouseInfo](ctx, m)
+	return gwerrors.Convert(ctx, m, pbmo.ToPB[WarehouseModel, commonpb.WarehouseInfo])
 }
 
 // ToPBsWarehouse 批量转换
 //
-// 直接用 bizerror.ToPBs：整个切片一次转换，内部复用同一份字段计划，
+// 直接用 gwerrors.ConvertSlice：整个切片一次转换，内部复用同一份字段计划，
 // 不像逐条调用那样每次都走一遍类型断言
-// [EN] bizerror.ToPBs converts the whole slice reusing one field plan
+// [EN] gwerrors.ConvertSlice converts the whole slice reusing one field plan
 func ToPBsWarehouse(ctx context.Context, items []*WarehouseModel) ([]*commonpb.WarehouseInfo, error) {
-	return bizerror.ToPBs[WarehouseModel, commonpb.WarehouseInfo](ctx, items)
+	return gwerrors.ConvertSlice(ctx, items, pbmo.ToPBs[WarehouseModel, commonpb.WarehouseInfo])
 }

@@ -12,7 +12,7 @@
 package main
 
 import (
-	goconfig "github.com/kamalyes/go-config"
+	goconfig "github.com/kamalyes/go-rpc-gateway/config"
 	"github.com/kamalyes/kronos-my-service/bootstrap"
 	"log"
 	"os"

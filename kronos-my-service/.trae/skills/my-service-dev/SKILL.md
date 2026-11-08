@@ -44,10 +44,10 @@ project/
 |---------|---------|
 | `github.com/kamalyes/go-rpc-gateway` | Gateway framework (gRPC + HTTP) |
 | `github.com/kamalyes/go-sqlbuilder` | ORM base repository, migrator |
-| `github.com/kamalyes/go-pbmo` | Proto ↔ Model bidirectional conversion |
-| `github.com/kamalyes/go-config` | Environment config |
+| `github.com/kamalyes/go-toolbox/pkg/pbmo` | Proto ↔ Model bidirectional conversion |
+| `github.com/kamalyes/go-rpc-gateway/config` | Environment config |
 | `github.com/kamalyes/go-toolbox` | ID generation, utilities |
-| `github.com/kamalyes/go-bizerror` | Generic business error codes, i18n errors, status mapping |
+| `github.com/kamalyes/go-rpc-gateway/errors` | Generic business error codes, i18n errors, status mapping |
 | `{org}/{prefix}-share-proto/pb/*` | Generated proto Go code |
 
 ## Adding a New Entity - Complete Checklist
@@ -62,7 +62,7 @@ package models
 import (
     "time"
     commonpb "{share-proto-module}/pb/common"
-    "github.com/kamalyes/go-pbmo"
+    "github.com/kamalyes/go-toolbox/pkg/pbmo"
 )
 
 // XxxModel - field names must match proto for PBMO auto-conversion
@@ -238,7 +238,7 @@ Two edits, and **both are mandatory**. Only the first one compiles on its own, w
 why it gets forgotten.
 
 **8a. Declare the constants.** A code's value IS its i18n key. Generic codes live in
-`go-bizerror`; only entity-specific semantics belong here.
+`go-rpc-gateway/errors`; only entity-specific semantics belong here.
 
 ```go
 const (
@@ -256,7 +256,7 @@ BizErrCodeXxxAlreadyExists: {GRPC: codes.AlreadyExists, Gateway: gwerrors.ErrCod
 BizErrCodeXxxInvalidStatus: {GRPC: codes.InvalidArgument, Gateway: gwerrors.ErrCodeBadRequest},
 ```
 
-`bizerror.Mapping()` resolves a code in exactly three steps: an explicitly registered mapping
+`gwerrors.Mapping()` resolves a code in exactly three steps: an explicitly registered mapping
 wins; otherwise a code ending in `_not_found` maps to `NotFound`; otherwise **everything falls
 back to `Internal`, i.e. 500**. So a declared-but-unregistered `error.xxx_already_exists`
 answers a uniqueness conflict with a 500, which tells the caller the service is broken and
@@ -279,7 +279,7 @@ Always write the field names (`GRPC:` / `Gateway:`): `go vet`'s composites check
 literals of a type from another package, and `go vet ./...` is its own CI step.
 
 Nothing needs wiring: `bootstrap/errcodes.go` calls
-`bizerror.RegisterMany(errcodes.Mappings())` once at the top of `Run()`, before any request can
+`gwerrors.RegisterMany(errcodes.Mappings())` once at the top of `Run()`, before any request can
 arrive, so a new entry in `Mappings()` takes effect on its own.
 
 ### Step 9: Locale Files (`locales/*.json`)
@@ -288,7 +288,7 @@ Add every new key to **all 28** locale files, and keep the key sets exactly equa
 key missing from one language falls back for that language only, which is the kind of bug that
 shows up solely under a particular `Accept-Language`.
 
-Keys go **under the `error` object without the `error.` prefix**. go-i18n flattens nested
+Keys go **under the `error` object without the `error.` prefix**. go-toolbox/pkg/i18n flattens nested
 objects with dots at load time, so `error` + `xxx_not_found` is the code value
 `error.xxx_not_found`. Do not write the dotted key at the top level; it would work, but it would
 no longer match the layout the other 28 files use.
@@ -348,7 +348,7 @@ func (s *XxxService) XxxGet(ctx context.Context, req *pb.XxxGetRequest) (*pb.Xxx
     }
     if model == nil {
         // 查到了但没有：实体专属 not_found
-        return nil, bizerror.ToGRPCError(ctx, errcodes.BizErrCodeXxxNotFound)
+        return nil, gwerrors.ToGRPCError(ctx, errcodes.BizErrCodeXxxNotFound)
     }
     ...
 }
@@ -358,7 +358,7 @@ Uniqueness conflicts carry the offending value back through the template:
 
 ```go
 if exists {
-    return nil, bizerror.ToGRPCErrorWithTemplate(ctx, errcodes.BizErrCodeXxxAlreadyExists,
+    return nil, gwerrors.ToGRPCErrorWithTemplate(ctx, errcodes.BizErrCodeXxxAlreadyExists,
         map[string]any{"reason": req.GetCode()})
 }
 ```
@@ -367,14 +367,14 @@ Which code to reach for:
 
 - **`errcodes.BizErrCode<Entity>*`** whenever an entity can be named. The response then carries
   `error.<entity>_not_found` and the caller can see which resource is missing.
-- **`go-bizerror` builtins** only when nothing entity-specific is involved:
+- **`go-rpc-gateway/errors` builtins** only when nothing entity-specific is involved:
   `BizErrCodeDatabaseOperationFailed` for an infrastructure failure (via `common.DBError`),
   `BizErrCodeUnauthenticated` for a missing tenant in the context (via `common.TenantOf`).
 - **Never** the raw underlying error: it can carry table names, SQL fragments or connection
   strings. The full text goes to the log, the response carries only the code and its localized
   message.
 
-Enum allowed-values are checked in the business method, not with a `oneof` struct tag: go-argus
+Enum allowed-values are checked in the business method, not with a `oneof` struct tag: go-toolbox/pkg/argus
 formats a protobuf enum to its name before comparing, so numeric candidates reject valid
 requests. A `validate:"required,max=8"` tag on a repeated enum guarantees only that values were
 sent and how many — `UNSPECIFIED` passes it.
@@ -413,7 +413,7 @@ pbNames := models.ConvertI18NNamesToPB(model.I18nNames)
    sets equal
 3. **ALWAYS** register every new error code in `errcodes.Mappings()`; a code that is declared
    but not registered answers 500 unless it ends in `_not_found`
-4. **ALWAYS** use `bizerror.ToGRPCError()` / `ToGRPCErrorWithTemplate()` for returning errors
+4. **ALWAYS** use `gwerrors.ToGRPCError()` / `ToGRPCErrorWithTemplate()` for returning errors
    from service methods, with an `errcodes` code whenever an entity can be named
 5. **ALWAYS** use `NewSnowflakeID()` for generating entity IDs
 6. **ALWAYS** match model field names with proto field names for PBMO compatibility

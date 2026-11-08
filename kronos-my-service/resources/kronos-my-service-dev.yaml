@@ -241,7 +241,7 @@ database:
             ssl-root-cert: ""
             ssl-cert: ""
             ssl-key: ""
-            application-name: go-config
+            application-name: go-rpc-gateway/config
             max-idle-conns: 10
             max-open-conns: 100
             conn-max-idle-time: 300

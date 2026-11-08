@@ -9,11 +9,11 @@ A gRPC microservice for the my domain. Its contract comes from a shared contract
 | Component | Purpose |
 |-----------|---------|
 | [go-rpc-gateway](https://github.com/kamalyes/go-rpc-gateway) | Framework: gRPC + HTTP, interceptor chain (rate limit / shedder / breaker / i18n / validation), cpool connections |
-| [go-config](https://github.com/kamalyes/go-config) | Configuration, env prefix `KRONOS` |
-| [go-pbmo](https://github.com/kamalyes/go-pbmo) | Model ↔ Protobuf conversion by reflection, no hand-written DTOs |
+| [config](https://github.com/kamalyes/go-rpc-gateway/tree/master/config) | Configuration, env prefix `KRONOS` |
+| [pbmo](https://github.com/kamalyes/go-toolbox/tree/master/pkg/pbmo) | Model ↔ Protobuf conversion by reflection, no hand-written DTOs |
 | [go-sqlbuilder](https://github.com/kamalyes/go-sqlbuilder) | Generic repository base plus enforced parameterised queries |
-| [go-bizerror](https://github.com/kamalyes/go-bizerror) | Business error codes → gRPC/gateway status codes, message resolved per request language |
-| [go-i18n](https://github.com/kamalyes/go-i18n) | i18n runtime |
+| [errors](https://github.com/kamalyes/go-rpc-gateway/tree/master/errors) | Business error codes → gRPC/gateway status codes, message resolved per request language |
+| [pkg/i18n](https://github.com/kamalyes/go-toolbox/tree/master/pkg/i18n) | i18n runtime |
 | github.com/kamalyes/kronos-share-proto-template | Contract hub: proto definitions and generated pb code |
 
 ## Layout
@@ -112,7 +112,7 @@ Step-by-step patterns live in `.trae/skills/my-service-dev/SKILL.md`.
 Business code is one line:
 
 ```go
-return nil, bizerror.ToGRPCError(ctx, errcodes.ProductNotFound)
+return nil, gwerrors.ToGRPCError(ctx, errcodes.ProductNotFound)
 ```
 
 The framework handles the rest: error code → message in the request language → gRPC status mapping → HTTP JSON shape.
@@ -123,7 +123,7 @@ The framework handles the rest: error code → message in the request language �
 ProductNotFound = "error.product_not_found"
 ```
 
-⚠️ **Every code that does not end in `_not_found` MUST be registered explicitly in `Mappings()`.** go-bizerror only auto-maps the `_not_found` suffix to `NotFound`; everything else falls back to `Internal`. An unregistered `_already_exists` therefore returns **500 instead of 409**, with no warning anywhere.
+⚠️ **Every code that does not end in `_not_found` MUST be registered explicitly in `Mappings()`.** go-rpc-gateway/errors only auto-maps the `_not_found` suffix to `NotFound`; everything else falls back to `Internal`. An unregistered `_already_exists` therefore returns **500 instead of 409**, with no warning anywhere.
 
 When adding a code, change both places in `errcodes/codes.go` (the constant and `Mappings()`) and **all** files under `locales/`.
 

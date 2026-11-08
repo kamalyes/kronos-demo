@@ -11,34 +11,34 @@
 
 // Package errcodes 声明本服务专属的业务错误码，并给出它们的状态码映射
 //
-// 为什么需要这一层：go-bizerror 只持有跨服务通用的码（error.not_found、error.conflict
+// 为什么需要这一层：go-rpc-gateway/errors 只持有跨服务通用的码（error.not_found、error.conflict
 // 这类），实体专属语义必须由各服务自己定义通用码只能回答「冲突了」，回答不了
 // 「哪个实体的哪个字段冲突了」，而调用方正是靠后者决定换个编码重试还是提示用户改输入
 //
 // 为什么叫 errcodes 而不是 errors：包名 errors 会在本包内遮蔽标准库的 errors，
-// 而本包只放「码 + 映射」、不提供任何错误构造函数（构造在 go-bizerror），
+// 而本包只放「码 + 映射」、不提供任何错误构造函数（构造在 go-rpc-gateway/errors），
 // 叫 errcodes 名实相符，也不会让人误以为这里有 New / Wrap 之类
 //
 // 三条约定
 //
-// 一、码值本身就是 i18n key go-bizerror 的内置码就是这么定的
+// 一、码值本身就是 i18n key go-rpc-gateway/errors 的内置码就是这么定的
 // （BizErrCodeNotFound = "error.not_found"），所以这里的每个码值都要在
 // locales/*.json 的 error 对象下有同名键，28 个语言文件都要有
 //
-// 二、常量名统一 BizErrCode<实体><语义>，与 go-bizerror 的命名对齐，
+// 二、常量名统一 BizErrCode<实体><语义>，与 go-rpc-gateway/errors 的命名对齐，
 // 让通用码与专属码在调用处读起来是同一套东西
 //
 // 三、新增码必须同时做三件事：加常量、在 Mappings 里登记映射、补 28 个语言文件
 // 漏掉第二件事的后果见 Mappings 的注释
 //
 // [EN] This package declares the service's own business error codes and their status mappings.
-// go-bizerror holds only the cross-service generic codes, so entity-specific semantics have to
+// go-rpc-gateway/errors holds only the cross-service generic codes, so entity-specific semantics have to
 // live here: a generic code can say "there was a conflict" but not which entity and which field
 // conflicted, which is exactly what the caller needs in order to decide between retrying with
 // another code and asking the user to change the input. The package is named errcodes rather
 // than errors because the latter would shadow the standard library inside this package, and
 // because this package holds codes and mappings only, with no error constructors. Three
-// conventions: a code's value IS its i18n key, matching how go-bizerror defines its builtin
+// conventions: a code's value IS its i18n key, matching how go-rpc-gateway/errors defines its builtin
 // codes, so every value here needs the same key under the error object of all 28 locale files;
 // constant names follow BizErrCode<Entity><Semantics> so generic and specific codes read as one
 // system at the call site; and adding a code means adding the constant, registering its mapping
@@ -46,7 +46,6 @@
 package errcodes
 
 import (
-	bizerror "github.com/kamalyes/go-bizerror"
 	gwerrors "github.com/kamalyes/go-rpc-gateway/errors"
 	"google.golang.org/grpc/codes"
 )
@@ -80,7 +79,7 @@ const (
 	// BizErrCodeProductInvalidStatus 请求里的 Product 状态枚举不合法
 	//
 	// 这是**入参**不合法，不是资源状态不合法，所以映射成 InvalidArgument
-	// 枚举的允许值由业务方法校验而不是 go-argus 的 oneof 规则，原因见 service 层注释
+	// 枚举的允许值由业务方法校验而不是 go-toolbox/pkg/argus 的 oneof 规则，原因见 service 层注释
 	//
 	// [EN] The *request* is invalid rather than the resource's state, hence InvalidArgument.
 	// Allowed enum values are checked in the business method rather than with a oneof tag; the
@@ -181,7 +180,7 @@ const (
 
 // Mappings 返回本服务专属错误码到 gRPC 状态码与网关错误码的映射
 //
-// 为什么每个码都要在这里登记：go-bizerror 的 Mapping 只认三件事——
+// 为什么每个码都要在这里登记：go-rpc-gateway/errors 的 Mapping 只认三件事——
 // 显式注册过的映射、以 _not_found 结尾的码（自动映射成 NotFound），其余一律兜底
 // Internal 也就是 500所以 error.xxx_already_exists 这种码不登记就是
 // 「唯一性冲突返回 500」，而 500 让调用方以为是服务挂了、于是去重试
@@ -191,7 +190,7 @@ const (
 // 二是哪天有人把码重命名成 error.xxx_missing，显式登记只会让这里报编译错误，
 // 而靠后缀规则的话状态码会从 404 静默变成 500
 //
-// [EN] Every code must be registered here because go-bizerror's Mapping recognizes only three
+// [EN] Every code must be registered here because go-rpc-gateway/errors's Mapping recognizes only three
 // things: an explicitly registered mapping, a code ending in _not_found (mapped to NotFound),
 // and everything else falling back to Internal, i.e. 500. An unregistered
 // error.xxx_already_exists therefore answers a uniqueness conflict with a 500, which tells the
@@ -209,8 +208,8 @@ const (
 // type from another package, and go vet ./... is a CI step of its own, so omitting them turns
 // it red. They also act as this table's column headers, so reading it does not require looking
 // up CodeMapping's definition.
-func Mappings() map[string]bizerror.CodeMapping {
-	return map[string]bizerror.CodeMapping{
+func Mappings() map[string]gwerrors.CodeMapping {
+	return map[string]gwerrors.CodeMapping{
 		// Product
 		BizErrCodeProductNotFound:      {GRPC: codes.NotFound, Gateway: gwerrors.ErrCodeNotFound},
 		BizErrCodeProductAlreadyExists: {GRPC: codes.AlreadyExists, Gateway: gwerrors.ErrCodeConflict},

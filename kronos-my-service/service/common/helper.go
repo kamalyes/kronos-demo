@@ -13,7 +13,7 @@ package common
 import (
 	"context"
 
-	bizerror "github.com/kamalyes/go-bizerror"
+	gwerrors "github.com/kamalyes/go-rpc-gateway/errors"
 	gwmiddleware "github.com/kamalyes/go-rpc-gateway/middleware"
 )
 
@@ -28,7 +28,7 @@ import (
 func TenantOf(ctx context.Context) (string, error) {
 	tenantID := gwmiddleware.GetTenantID(ctx)
 	if tenantID == "" {
-		return "", bizerror.ToGRPCError(ctx, bizerror.BizErrCodeUnauthenticated)
+		return "", gwerrors.ToGRPCError(ctx, gwerrors.BizErrCodeUnauthenticated)
 	}
 	return tenantID, nil
 }
@@ -42,7 +42,7 @@ func TenantOf(ctx context.Context) (string, error) {
 // fragments or connection strings. The full text goes to the log; the response carries only
 // the code and its localized message.
 func DBError(ctx context.Context) error {
-	return bizerror.ToGRPCError(ctx, bizerror.BizErrCodeDatabaseOperationFailed)
+	return gwerrors.ToGRPCError(ctx, gwerrors.BizErrCodeDatabaseOperationFailed)
 }
 
 // NotFound 资源不存在（通用码）
@@ -61,5 +61,5 @@ func DBError(ctx context.Context) error {
 // as a lookup by an external identifier that matches nothing, and as a stopgap before a new
 // entity gets its own code
 func NotFound(ctx context.Context) error {
-	return bizerror.ToGRPCError(ctx, bizerror.BizErrCodeNotFound)
+	return gwerrors.ToGRPCError(ctx, gwerrors.BizErrCodeNotFound)
 }

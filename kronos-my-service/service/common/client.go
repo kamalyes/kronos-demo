@@ -41,7 +41,7 @@ package common
 import (
 	"context"
 
-	gwconfig "github.com/kamalyes/go-config/pkg/gateway"
+	gwconfig "github.com/kamalyes/go-rpc-gateway/config/core"
 	gwconstants "github.com/kamalyes/go-rpc-gateway/constants"
 	grpcpool "github.com/kamalyes/go-rpc-gateway/cpool/grpc"
 	gwglobal "github.com/kamalyes/go-rpc-gateway/global"

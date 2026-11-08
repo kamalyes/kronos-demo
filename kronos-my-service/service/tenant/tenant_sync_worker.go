@@ -14,9 +14,9 @@ import (
 	"context"
 	"time"
 
-	pbmo "github.com/kamalyes/go-pbmo"
 	gwconstants "github.com/kamalyes/go-rpc-gateway/constants"
 	gwglobal "github.com/kamalyes/go-rpc-gateway/global"
+	pbmo "github.com/kamalyes/go-toolbox/pkg/pbmo"
 	"github.com/kamalyes/kronos-my-service/models"
 	"github.com/kamalyes/kronos-my-service/repository"
 	"github.com/kamalyes/kronos-my-service/service/common"

@@ -16,17 +16,17 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/kamalyes/kronos-gateway-service/constants"
-	authpb "github.com/kamalyes/kronos-share-proto-template/pb/access_control"
-	commonpb "github.com/kamalyes/kronos-share-proto-template/pb/common"
-	enumspb "github.com/kamalyes/kronos-share-proto-template/pb/enums"
 	gruntime "github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
-	goi18n "github.com/kamalyes/go-i18n"
 	grpcpool "github.com/kamalyes/go-rpc-gateway/cpool/grpc"
 	gwglobal "github.com/kamalyes/go-rpc-gateway/global"
 	gwmiddleware "github.com/kamalyes/go-rpc-gateway/middleware"
 	"github.com/kamalyes/go-rpc-gateway/response"
 	"github.com/kamalyes/go-toolbox/pkg/convert"
+	goi18n "github.com/kamalyes/go-toolbox/pkg/i18n"
+	"github.com/kamalyes/kronos-gateway-service/constants"
+	authpb "github.com/kamalyes/kronos-share-proto-template/pb/access_control"
+	commonpb "github.com/kamalyes/kronos-share-proto-template/pb/common"
+	enumspb "github.com/kamalyes/kronos-share-proto-template/pb/enums"
 )
 
 // authCheckTimeout 单次鉴权调用的超时
@@ -52,10 +52,10 @@ const authCheckTimeout = 15 * time.Second
 // ============================================================================
 //
 // 流程：
-//   1. 从连接池拿 AC 服务的连接（AutoRegister 已经按配置建好了）
-//   2. 调 Authorities(path, method)，把请求的 metadata 整体透传过去
-//   3. 拒绝 → 按 token_valid 决定 401 还是 403
-//   4. 放行 → 把返回的 Payload 注入 HTTP header 与 context，交给下一环
+//  1. 从连接池拿 AC 服务的连接（AutoRegister 已经按配置建好了）
+//  2. 调 Authorities(path, method)，把请求的 metadata 整体透传过去
+//  3. 拒绝 → 按 token_valid 决定 401 还是 403
+//  4. 放行 → 把返回的 Payload 注入 HTTP header 与 context，交给下一环
 //
 // 第 4 步是这套架构的关键：下游服务**不重复验 token**，它们从 header 里读身份。
 // 所以这里注入什么，下游就信什么——这也意味着下游服务绝不能直接暴露给外网。

@@ -13,11 +13,11 @@ package bootstrap
 import (
 	"fmt"
 
-	"github.com/kamalyes/kronos-gateway-service/constants"
-	goconfig "github.com/kamalyes/go-config"
 	gateway "github.com/kamalyes/go-rpc-gateway"
+	goconfig "github.com/kamalyes/go-rpc-gateway/config"
 	grpcpool "github.com/kamalyes/go-rpc-gateway/cpool/grpc"
 	gwglobal "github.com/kamalyes/go-rpc-gateway/global"
+	"github.com/kamalyes/kronos-gateway-service/constants"
 )
 
 // GatewayService 网关
@@ -27,23 +27,24 @@ import (
 // ============================================================================
 //
 // 它做四件事：
-//   1. 按配置建网关
-//   2. AutoRegisterWithHealthCheck —— 通过 gRPC server reflection 发现下游服务，
-//      读取它们 proto 里的 google.api.http 注解，在**本进程里**建出 HTTP 路由
-//   3. 挂一个鉴权中间件（见 middleware.go）
-//   4. 重建 HTTP 网关让中间件生效，然后跑
+//  1. 按配置建网关
+//  2. AutoRegisterWithHealthCheck —— 通过 gRPC server reflection 发现下游服务，
+//     读取它们 proto 里的 google.api.http 注解，在**本进程里**建出 HTTP 路由
+//  3. 挂一个鉴权中间件（见 middleware.go）
+//  4. 重建 HTTP 网关让中间件生效，然后跑
 //
 // 第 2 步是为什么这个文件这么短：**没有任何 per-service 的注册代码**。
 // 加一个下游服务只需要在 resources 的 grpc.clients 里加一条，
 // 不用改这里，也不用 import 它的 pb 包。
 //
 // 代价与前提：
-//   下游必须开 gRPC reflection（enable-reflection: true）。关掉的现象是
-//   「接口 404 但服务明明活着」，而且网关启动日志里只会少几行，很容易漏看。
 //
-//   HTTP 路由来自 proto 注解，所以没有注解的 RPC 不会有 HTTP 入口。
-//   这是特性不是缺陷：AuthService.Authorities 就刻意不加注解，
-//   于是它永远拿不到 HTTP 路由（见 middleware.go 的说明）。
+//	下游必须开 gRPC reflection（enable-reflection: true）。关掉的现象是
+//	「接口 404 但服务明明活着」，而且网关启动日志里只会少几行，很容易漏看。
+//
+//	HTTP 路由来自 proto 注解，所以没有注解的 RPC 不会有 HTTP 入口。
+//	这是特性不是缺陷：AuthService.Authorities 就刻意不加注解，
+//	于是它永远拿不到 HTTP 路由（见 middleware.go 的说明）。
 //
 // [EN] The gateway holds no business code at all. It builds itself from config, calls
 // AutoRegisterWithHealthCheck to discover downstream services through gRPC server reflection

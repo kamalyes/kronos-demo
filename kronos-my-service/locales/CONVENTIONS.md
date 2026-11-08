@@ -52,7 +52,7 @@
 }
 ```
 
-go-i18n 在加载时把嵌套结构按点号拍平（见 `FlattenToMessages`），所以 `error` 对象里的
+go-toolbox/pkg/i18n 在加载时把嵌套结构按点号拍平（见 `FlattenToMessages`），所以 `error` 对象里的
 `product_not_found` 查找键就是 `error.product_not_found`——这正好是 `errcodes` 里那个码的值
 
 **本仓库是 kopy 模板**，所以实体名是占位符，`error` 整块也包在
@@ -60,7 +60,7 @@ go-i18n 在加载时把嵌套结构按点号拍平（见 `FlattenToMessages`）�
 JSON 两种情况下都合法改这些文件时不要把条件块拆开，否则关掉示例那条路径会渲染出
 多一个逗号的非法 JSON
 
-通用错误码（`error.not_found`、`error.conflict` 等）**不在这里**：它们的文案由 go-bizerror
+通用错误码（`error.not_found`、`error.conflict` 等）**不在这里**：它们的文案由 go-rpc-gateway/errors
 内置兜底，服务侧只在需要覆盖时才写同名键
 
 ## 添加新语言
@@ -90,13 +90,13 @@ JSON 两种情况下都合法改这些文件时不要把条件块拆开，否则
 ```go
 import (
     gatewayMiddleware "github.com/kamalyes/go-rpc-gateway/middleware"
-    bizerror "github.com/kamalyes/go-bizerror"
+    gwerrors "github.com/kamalyes/go-rpc-gateway/errors"
     "github.com/kamalyes/kronos-my-service/errcodes"
 )
 ```
 
-通用码在 `bizerror`（go-bizerror），实体专属码在本服务的 `errcodes` 包——不要再找
-`<项目>/errors`，那个包不存在，错误构造函数在 go-bizerror 里
+通用码在 `gwerrors`（go-rpc-gateway/errors），实体专属码在本服务的 `errcodes` 包——不要再找
+`<项目>/errors`，那个包不存在，错误构造函数在 go-rpc-gateway/errors 里
 
 #### 2. 简单消息翻译
 
@@ -121,14 +121,14 @@ message := gatewayMiddleware.TWithMap(ctx, "error.agent_assigned_success", map[s
 #### 4. 在错误返回中使用
 
 ```go
-// 返回带状态码的业务错误：文案由 go-bizerror 按请求语言解析，不要自己拼句子
+// 返回带状态码的业务错误：文案由 go-rpc-gateway/errors 按请求语言解析，不要自己拼句子
 if model == nil {
-    return nil, bizerror.ToGRPCError(ctx, errcodes.BizErrCodeProductNotFound)
+    return nil, gwerrors.ToGRPCError(ctx, errcodes.BizErrCodeProductNotFound)
 }
 
 // 带模板变量的
 if exists {
-    return nil, bizerror.ToGRPCErrorWithTemplate(ctx, errcodes.BizErrCodeProductAlreadyExists,
+    return nil, gwerrors.ToGRPCErrorWithTemplate(ctx, errcodes.BizErrCodeProductAlreadyExists,
         map[string]any{"reason": req.GetCode()})
 }
 ```
@@ -206,7 +206,7 @@ A: 检查以下几点：
 **Q: 如何查看已有的 i18n key？**
 
 A: 本服务自己的 key 看 `locales/en.json` 或 `locales/zh.json`，错误类的 key 都在 `error`
-对象下；跨服务通用码的兜底文案不在这里，见 go-bizerror 的 `builtin_messages.go`
+对象下；跨服务通用码的兜底文案不在这里，见 go-rpc-gateway/errors 的 `builtin_messages.go`
 
 ## 翻译注意事项
 

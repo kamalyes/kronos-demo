@@ -12,7 +12,7 @@ package bootstrap
 
 import (
 	"fmt"
-	goconfig "github.com/kamalyes/go-config"
+	goconfig "github.com/kamalyes/go-rpc-gateway/config"
 	gwglobal "github.com/kamalyes/go-rpc-gateway/global"
 	"github.com/kamalyes/kronos-my-service/migrations"
 )

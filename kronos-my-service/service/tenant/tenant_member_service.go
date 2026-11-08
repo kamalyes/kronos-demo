@@ -13,7 +13,7 @@ package tenant
 import (
 	"context"
 
-	bizerror "github.com/kamalyes/go-bizerror"
+	gwerrors "github.com/kamalyes/go-rpc-gateway/errors"
 	gwglobal "github.com/kamalyes/go-rpc-gateway/global"
 	gwmiddleware "github.com/kamalyes/go-rpc-gateway/middleware"
 	"github.com/kamalyes/kronos-my-service/errcodes"
@@ -54,7 +54,7 @@ func NewTenantMemberService(repo *repository.TenantMemberRepository) *TenantMemb
 // 为什么不交给 proto 的 struct tag：协议中心在 roles 上注入的是
 // validate:"required,max=8"，它只保证「传了、不超过 8 个」，保证不了每个值都是
 // 合法角色——UNSPECIFIED 是枚举的零值，照样过校验
-// 而 go-argus 的 oneof 系列规则在这里也用不上：它把 protobuf 枚举格式化成名称再比较，
+// 而 go-toolbox/pkg/argus 的 oneof 系列规则在这里也用不上：它把 protobuf 枚举格式化成名称再比较，
 // 写数字候选值会误拒合法请求（协议中心的 proto 规范第 7 节写了这条）
 //
 // 三个接口（Add / RoleReplace / BatchInvite）都收 roles，所以抽成一处，
@@ -62,7 +62,7 @@ func NewTenantMemberService(repo *repository.TenantMemberRepository) *TenantMemb
 //
 // [EN] The hub's validate tag guarantees only that roles were sent and that there are at most
 // eight; it cannot guarantee each value is a real role, since UNSPECIFIED is the enum's zero
-// value and passes. go-argus's oneof-style rules do not help either, because it formats a
+// value and passes. go-toolbox/pkg/argus's oneof-style rules do not help either, because it formats a
 // protobuf enum to its name before comparing, so numeric candidates reject valid requests. All
 // three endpoints take roles, so the check lives in one place: otherwise a new rule means three
 // edits and the one that is missed becomes the path that accepts an illegal role
@@ -70,7 +70,7 @@ func validateMemberRoles(ctx context.Context, roles []enumspb.TenantMemberRole) 
 	unspecified := enumspb.TenantMemberRole_TENANT_MEMBER_ROLE_UNSPECIFIED
 	for _, role := range roles {
 		if role == unspecified {
-			return bizerror.ToGRPCErrorWithTemplate(ctx, errcodes.BizErrCodeTenantMemberInvalidRole,
+			return gwerrors.ToGRPCErrorWithTemplate(ctx, errcodes.BizErrCodeTenantMemberInvalidRole,
 				map[string]any{"reason": role.String()})
 		}
 	}
@@ -128,7 +128,7 @@ func (s *TenantMemberService) TenantMemberAdd(
 		// 报成员不存在会让调用方以为是 user_id 的问题，去查一个还没创建的东西
 		// [EN] The root's not-found rather than the member's: what is missing is the root, and
 		// blaming the member points the caller at a user id that was never the problem
-		return nil, bizerror.ToGRPCError(ctx, errcodes.BizErrCodeTenantNotFound)
+		return nil, gwerrors.ToGRPCError(ctx, errcodes.BizErrCodeTenantNotFound)
 	}
 
 	if err := validateMemberRoles(ctx, req.GetRoles()); err != nil {
@@ -142,7 +142,7 @@ func (s *TenantMemberService) TenantMemberAdd(
 		return nil, common.DBError(ctx)
 	}
 	if exists {
-		return nil, bizerror.ToGRPCErrorWithTemplate(ctx, errcodes.BizErrCodeTenantMemberAlreadyExists,
+		return nil, gwerrors.ToGRPCErrorWithTemplate(ctx, errcodes.BizErrCodeTenantMemberAlreadyExists,
 			map[string]any{"reason": req.GetUserId()})
 	}
 
@@ -210,7 +210,7 @@ func (s *TenantMemberService) TenantMemberRoleReplace(
 		return nil, common.DBError(ctx)
 	}
 	if member == nil {
-		return nil, bizerror.ToGRPCError(ctx, errcodes.BizErrCodeTenantMemberNotFound)
+		return nil, gwerrors.ToGRPCError(ctx, errcodes.BizErrCodeTenantMemberNotFound)
 	}
 
 	member.SetRoles(req.GetRoles())

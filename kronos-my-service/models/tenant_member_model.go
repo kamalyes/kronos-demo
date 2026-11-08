@@ -14,7 +14,9 @@ import (
 	"context"
 	"time"
 
-	bizerror "github.com/kamalyes/go-bizerror"
+	gwerrors "github.com/kamalyes/go-rpc-gateway/errors"
+
+	pbmo "github.com/kamalyes/go-toolbox/pkg/pbmo"
 	sqlbuilder "github.com/kamalyes/go-sqlbuilder"
 	commonpb "github.com/kamalyes/kronos-share-proto-template/pb/common"
 	enumspb "github.com/kamalyes/kronos-share-proto-template/pb/enums"
@@ -84,7 +86,7 @@ func (m *TenantMemberModel) SetRoles(roles []enumspb.TenantMemberRole) {
 // same enum, so pbmo copies it automatically. The contract test asserts this, and it is what
 // turns a renamed enum in the contract into a test failure instead of a silently empty field
 func (m *TenantMemberModel) ToPB(ctx context.Context) (*commonpb.TenantMemberInfo, error) {
-	return bizerror.ToPB[TenantMemberModel, commonpb.TenantMemberInfo](ctx, m)
+	return gwerrors.Convert(ctx, m, pbmo.ToPB[TenantMemberModel, commonpb.TenantMemberInfo])
 }
 
 // ToPBsTenantMember 批量转换

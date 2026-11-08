@@ -14,8 +14,8 @@ package models
 import (
 	"database/sql/driver"
 
-	"github.com/kamalyes/go-pbmo"
 	sqlbuilder "github.com/kamalyes/go-sqlbuilder"
+	"github.com/kamalyes/go-toolbox/pkg/pbmo"
 	commonpb "github.com/kamalyes/kronos-share-proto-template/pb/common"
 )
 
